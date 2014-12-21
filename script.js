@@ -1,0 +1,145 @@
+var gl;
+
+window.onload = function() {
+  var canvas = document.getElementById('canvas');
+  canvas.width  = 300;
+  canvas.height = 300;
+
+  gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+
+  gl.clearColor(0.0, 0.0, 0.0, 1.0);
+  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+  var vertexShader   = createShader('vertex-shader');
+  var fragmentShader = createShader('fragment-shader');
+  var program = createProgram(vertexShader, fragmentShader);
+
+  var vertex = [
+     0.0, 1.0, 0.0,
+     1.0, 0.0, 0.0,
+    -1.0, 0.0, 0.0
+  ];
+  var vbo = create_vbo(vertex);
+
+  // VBOをバインド
+  gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
+
+  // minMatrix.js を用いた行列関連処理
+  // matIVオブジェクトを生成
+  var m = new matIV();
+
+  // 各種行列の生成と初期化
+  var mMatrix = m.identity(m.create());
+  var vMatrix = m.identity(m.create());
+  var pMatrix = m.identity(m.create());
+  var mvpMatrix = m.identity(m.create());
+
+  // ビュー座標変換行列
+  m.lookAt([0.0, 1.0, 3.0], [0, 0, 0], [0, 1, 0], vMatrix);
+
+  // プロジェクション座標変換行列
+  m.perspective(90, canvas.width / canvas.height, 0.1, 100, pMatrix);
+
+  // 各行列を掛け合わせ座標変換行列を完成させる
+  m.multiply(pMatrix, vMatrix, mvpMatrix);
+  m.multiply(mvpMatrix, mMatrix, mvpMatrix);
+
+  // uniformLocationの取得
+  var uniLocation = gl.getUniformLocation(program, 'mvpMatrix');
+
+  // uniformLocationへ座標変換行列を登録
+  gl.uniformMatrix4fv(uniLocation, false, mvpMatrix);
+
+  var positionLocation = gl.getAttribLocation(program, 'vPosition');
+  gl.enableVertexAttribArray(positionLocation);
+  gl.vertexAttribPointer(positionLocation, 3, gl.FLOAT, false, 0, 0);
+
+  gl.drawArrays(gl.TRIANGLE, 0, 3);
+  gl.flush();
+};
+
+function createShader(id){
+    // シェーダを格納する変数
+    var shader;
+    
+    // HTMLからscriptタグへの参照を取得
+    var scriptElement = document.getElementById(id);
+    
+    // scriptタグが存在しない場合は抜ける
+    if(!scriptElement){return;}
+    
+    // scriptタグのtype属性をチェック
+    switch(scriptElement.type){
+        
+        // 頂点シェーダの場合
+        case 'x-shader/x-vertex':
+            shader = gl.createShader(gl.VERTEX_SHADER);
+            break;
+            
+        // フラグメントシェーダの場合
+        case 'x-shader/x-fragment':
+            shader = gl.createShader(gl.FRAGMENT_SHADER);
+            break;
+        default :
+            return;
+    }
+    
+    // 生成されたシェーダにソースを割り当てる
+    gl.shaderSource(shader, scriptElement.text);
+    
+    // シェーダをコンパイルする
+    gl.compileShader(shader);
+    
+    // シェーダが正しくコンパイルされたかチェック
+    if(gl.getShaderParameter(shader, gl.COMPILE_STATUS)){
+        // 成功していたらシェーダを返して終了
+        return shader;
+    }else{
+        // 失敗していたらエラーログをアラートする
+        alert(gl.getShaderInfoLog(shader));
+    }
+}
+
+function createProgram(vs, fs){
+    // プログラムオブジェクトの生成
+    var program = gl.createProgram();
+    
+    // プログラムオブジェクトにシェーダを割り当てる
+    gl.attachShader(program, vs);
+    gl.attachShader(program, fs);
+    
+    // シェーダをリンク
+    gl.linkProgram(program);
+    
+    // シェーダのリンクが正しく行なわれたかチェック
+    if(gl.getProgramParameter(program, gl.LINK_STATUS)){
+    
+        // 成功していたらプログラムオブジェクトを有効にする
+        gl.useProgram(program);
+        
+        // プログラムオブジェクトを返して終了
+        return program;
+    }else{
+        
+        // 失敗していたらエラーログをアラートする
+        alert(gl.getProgramInfoLog(program));
+    }
+}
+
+// VBOを生成する関数
+function create_vbo(data){
+  // バッファオブジェクトの生成
+  var vbo = gl.createBuffer();
+
+  // バッファをバインドする
+  gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
+
+  // バッファにデータをセット
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(data), gl.STATIC_DRAW);
+
+  // バッファのバインドを無効化
+  gl.bindBuffer(gl.ARRAY_BUFFER, null);
+
+  // 生成した VBO を返して終了
+  return vbo;
+}
