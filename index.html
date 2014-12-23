@@ -1,24 +1,40 @@
 <html>
-  <head>
+<head>
     <title>WebGL TEST</title>
     <meta charset="utf-8">
     <script id="vertex-shader" type="x-shader/x-vertex">
-      attribute vec3 vPosition;
-      uniform mat4 mvpMatrix;
-      void main() {
-        gl_Position = mvpMatrix * vec4(vPosition, 1.0);
-      }
+        attribute vec3 aPosition;
+        attribute vec3 aColor;
+        uniform mat4 vpMatrix;
+        uniform mat4 mMatrix;
+        varying vec3 vColor;
+        void main() {
+            gl_Position = vpMatrix * mMatrix * vec4(aPosition, 1.0);
+            vColor = aColor;
+        }
     </script>
     <script id="fragment-shader" type="x-shader/x-fragment">
-      precision mediump float;
-      void main() {
-        gl_FragColor = vec4(0.0, 1.0, 0.0, 1.0);
-      }
+        precision mediump float;
+        varying vec3 vColor;
+        void main() {
+            gl_FragColor = vec4(vColor, 1.0);
+        }
     </script>
     <script src="http://wgld.org/j/minMatrix.js" type="text/javascript"></script>
     <script src="script.js" type="text/javascript"></script>
-  </head>
-  <body>
+</head>
+<body>
+    <div style="float:left;margin-right:20px;">
+        Model<br>
+        RadX : <span id="model-rad-x"></span>,
+        RadY : <span id="model-rad-y"></span>
+    </div>
+    <div>
+        Camera Position<br>
+        x : <span id="camera-position-x"></span>,
+        y : <span id="camera-position-y"></span>,
+        z : <span id="camera-position-z"></span>
+    </div>
     <canvas id="canvas"></canvas>
-  </body>
+</body>
 </html>
