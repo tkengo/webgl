@@ -1,0 +1,57 @@
+# Blender MTL File: 'None'
+# Material Count: 5
+
+newmtl Skirt
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 0.000000
+illum 2
+map_Kd /Users/kengo/webgl/亞北ネル_アノマロ5th/neru_1.png
+map_d /Users/kengo/webgl/亞北ネル_アノマロ5th/neru_1.png
+
+newmtl eye
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 0.000000
+illum 2
+map_Kd /Users/kengo/webgl/亞北ネル_アノマロ5th/neru_3rd.png
+map_d /Users/kengo/webgl/亞北ネル_アノマロ5th/neru_3rd.png
+
+newmtl heir
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 0.000000
+illum 2
+map_Kd /Users/kengo/webgl/亞北ネル_アノマロ5th/neru_1.png
+map_d /Users/kengo/webgl/亞北ネル_アノマロ5th/neru_1.png
+
+newmtl heir_Dress
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 0.000000
+illum 2
+map_Kd /Users/kengo/webgl/亞北ネル_アノマロ5th/neru_1.png
+map_d /Users/kengo/webgl/亞北ネル_アノマロ5th/neru_1.png
+
+newmtl skin
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 0.000000
+illum 2
+map_Kd /Users/kengo/webgl/亞北ネル_アノマロ5th/neru_3rd.png
+map_d /Users/kengo/webgl/亞北ネル_アノマロ5th/neru_3rd.png
