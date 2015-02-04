@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+    <script src="./script.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gl-matrix/2.1.0/gl-matrix-min.js" type="text/javascript"></script>
+    <script id="vertex-shader" type="x-shader/x-vertex">
+        attribute vec3 aPosition; // 頂点座標
+        uniform mat4 wMatrix; // ワールド座標変換行列
+
+        void main() {
+            // 頂点座標に同次座標を加えてそのまま出力
+            gl_Position = wMatrix * vec4(aPosition, 1.0);
+        }
+    </script>
+    <script id="fragment-shader" type="x-shader/x-fragment">
+        precision mediump float; // 精度は中程度
+
+        void main() {
+            // 赤色を出力
+            gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+        }
+    </script>
+</head>
+<body>
+	<canvas id="canvas" width="500" height="500"></canvas>
+</body>
+</html>
